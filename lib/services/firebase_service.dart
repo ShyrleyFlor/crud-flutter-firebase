@@ -16,3 +16,10 @@ Future<List> getPeople() async {
   return people;
 }
 
+//añadimos datos a la base de datos
+Future<void> addPeople(String name) async {
+  //Inicializamos la BD
+  CollectionReference collectionReferencePeople = db.collection('people');
+  //añadimos los datos
+  await collectionReferencePeople.add({'name': name});
+}
