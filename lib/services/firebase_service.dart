@@ -2,24 +2,38 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 FirebaseFirestore db = FirebaseFirestore.instance;
 
-//leemos la base de datos
+//LEER LOS DATOS
 Future<List> getPeople() async {
   //Inicializamos la lista con los datos
   List people = [];
-  CollectionReference collectionReferencePeople = db.collection('people');
   //obtenemos los datos
-  QuerySnapshot queryPeople = await collectionReferencePeople.get();
+  QuerySnapshot queryPeople = await db.collection('people').get();
   //recorremos los datos
-  queryPeople.docs.forEach((element) {
-    people.add(element.data());
-  });
+  for(var doc in queryPeople.docs){
+    final Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+    final person = {
+      "name" : data['name'],
+      "id": doc.id,
+    };
+    people.add(person);
+  }
   return people;
 }
 
-//añadimos datos a la base de datos
+//AÑADIR LOS DATOS
 Future<void> addPeople(String name) async {
-  //Inicializamos la BD
-  CollectionReference collectionReferencePeople = db.collection('people');
   //añadimos los datos
-  await collectionReferencePeople.add({'name': name});
+  await db.collection('people').add({'name': name});
+}
+
+//EDITAR LOS DATOS  
+Future<void> editPeople(String id, String name) async {
+  //editamos los datos
+  await db.collection('people').doc(id).update({'name': name});
+}
+
+//ELIMINAR LOS DATOS
+Future<void> deletePeople(String id) async {
+  //eliminamos los datos
+  await db.collection('people').doc(id).delete();
 }

@@ -31,7 +31,54 @@ class _HomeState extends State<Home> {
             return ListView.builder(
               itemCount: snapshot.data?.length ?? 0,
               itemBuilder: (context, index) {
-                return Text(snapshot.data![index]['name']);
+                return Dismissible(
+                  confirmDismiss: (direction) async {
+                    bool result = false;
+                    result = await showDialog(
+                      context: context, 
+                      builder: (context){
+                        return AlertDialog(
+                          title: Text("¿Estas seguro de eliminar a ${snapshot.data![index]['name']}?"),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.pop(context, false);
+                              }, 
+                              child: const Text("Cancelar")
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                Navigator.pop(context, true);
+                              }, 
+                              child: const Text("Sí")
+                            )
+                          ]);
+                      });
+                    return result;
+                  },
+                  onDismissed: (direction) async {
+                    await deletePeople(snapshot.data![index]['id']);
+                    snapshot.data!.removeAt(index);
+                    setState(() {});
+                  },
+                  background: Container(
+                    color: Colors.red,
+                    child: const Icon(Icons.delete),
+                  ),
+                  direction: DismissDirection.endToStart,
+                  key: Key(snapshot.data![index]['id']),
+                  child: ListTile(
+                    title: Text(snapshot.data![index]['name']),
+                    onTap: (() async {await Navigator.pushNamed(
+                      context, '/edit', 
+                      arguments: {
+                        "name": snapshot.data![index]['name'],
+                        "id": snapshot.data![index]['id'],
+                      });
+                      setState(() {});
+                    })
+                  ),
+                );
               },
             );
         } else {
