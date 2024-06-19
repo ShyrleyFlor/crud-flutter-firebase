@@ -9,7 +9,7 @@ class AddNamePage extends StatefulWidget {
 }
 
 class _AddNamePageState extends State<AddNamePage> {
-  TextEditingController nameController = TextEditingController(text: " ");
+  TextEditingController nameController = TextEditingController(text: "");
 
   @override
   Widget build(BuildContext context) {
