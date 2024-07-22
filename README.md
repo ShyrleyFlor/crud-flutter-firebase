@@ -1,5 +1,3 @@
-# README.md
-
 ## CRUD Flutter Firebase
 
 Este proyecto es una aplicación de ejemplo que utiliza Flutter y Firebase para implementar operaciones CRUD (Crear, Leer, Actualizar y Eliminar) en una base de datos en tiempo real. Es una excelente manera de aprender a integrar Flutter con Firebase y comprender cómo gestionar datos en aplicaciones móviles.
